@@ -1,0 +1,101 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.javeriana'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2',
+            'org.mockito:mockito-core:5.12.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+}
+
+tasks.register('customerClassDefinitionTest', Test) {
+    useJUnitPlatform()
+    failFast = true
+    include '**/CustomerClassDefinitionTest.*'
+    testClassesDirs = testing.suites.test.sources.output.classesDirs
+    classpath = testing.suites.test.sources.runtimeClasspath
+
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+        showExceptions true
+        showCauses true
+        showStackTraces false
+    }
+}
+
+tasks.register('artistClassDefinitionTest', Test) {
+    useJUnitPlatform()
+    failFast = true
+    include '**/ArtistClassDefinitionTest.*'
+    testClassesDirs = testing.suites.test.sources.output.classesDirs
+    classpath = testing.suites.test.sources.runtimeClasspath
+
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+        showExceptions true
+        showCauses true
+        showStackTraces false
+    }
+}
+
+tasks.register('playListClassDefinitionTest', Test) {
+    useJUnitPlatform()
+    failFast = true
+    include '**/PlayListClassDefinitionTest.*'
+    testClassesDirs = testing.suites.test.sources.output.classesDirs
+    classpath = testing.suites.test.sources.runtimeClasspath
+
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+        showExceptions true
+        showCauses true
+        showStackTraces false
+    }
+}
+
+tasks.register('songClassDefinitionTest', Test) {
+    useJUnitPlatform()
+    failFast = true
+    include '**/SongClassDefinitionTest.*'
+    testClassesDirs = testing.suites.test.sources.output.classesDirs
+    classpath = testing.suites.test.sources.runtimeClasspath
+
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+        showExceptions true
+        showCauses true
+        showStackTraces false
+    }
+}
+
+
+application {
+    mainClassName = 'com.javeriana.Main'
+
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+
+test {
+    useJUnitPlatform()
+}
+
+run.dependsOn check
+check.dependsOn artistClassDefinitionTest, customerClassDefinitionTest, playListClassDefinitionTest, songClassDefinitionTest

@@ -1,0 +1,57 @@
+package com.javeriana;
+import java.util.UUID;
+
+public class Artist {
+    private UUID id;
+    private String name;
+
+    public Artist(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Artist(String name) {
+        this.name = name;
+    }
+}
+
+public class Customer {
+    private UUID id;
+    private String username;
+    private String password;
+    private String name;
+    private String lastName;
+    private int age;
+
+    public Customer(String username, String password, String name, String lastName, int age) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+    }
+}
+
+public class Playlist {
+    private UUID id;
+    private String name;
+
+    public Playlist(String name) {
+        this.name = name;
+    }
+}
+
+public class Song {
+    private UUID id;
+    private String name;
+    private String genre;
+    private int durationInSeconds;
+    private String album;
+
+    public Song(String name, String genre, int durationInSeconds, String album) {
+        this.name = name;
+        this.genre = genre;
+        this.durationInSeconds = durationInSeconds;
+        this.album = album;
+    }
+}
