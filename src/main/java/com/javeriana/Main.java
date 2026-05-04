@@ -29,11 +29,11 @@ public class Main {
                     System.out.println("6. Eliminar cliente");
                     System.out.println("7. Crear playlist");
                     System.out.println("8. Eliminar playlist");
-                    System.out.println("9. Ver clientes");
-                    System.out.println("10. Ver canciones");
-                    System.out.println("11. Ver artistas");
-                    System.out.println("12. Ver playlists");
-                    System.out.println("0. Volver");
+                    System.out.println("9. Ver lista de clientes");
+                    System.out.println("10. Ver lista de canciones");
+                    System.out.println("11. Ver lista de artistas");
+                    System.out.println("12. Ver lista de playlists");
+                    System.out.println("0. Volver al menu principal");
 
                     op = sc.nextInt();
                     sc.nextLine();

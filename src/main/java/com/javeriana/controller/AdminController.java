@@ -44,14 +44,14 @@ public class AdminController {
 
     }
 
-    public void createSong(String name, String genre, int dur, String artistId) {
+    public void createSong(String name, String genre, int dur, String album, String artistId) {
         Artist a = findArtist(artistId);
         if (a == null) return;
 
         List<Artist> list = new ArrayList<>();
         list.add(a);
 
-        songs.add(new Song(name, genre, dur, list));
+        songs.add(new Song(name, genre, dur, album, list));
     }
 
     public void removeSong(String id) {
