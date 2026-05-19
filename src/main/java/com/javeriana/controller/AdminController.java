@@ -1,8 +1,13 @@
 package com.javeriana.controller;
 
 import java.util.*;
+
+import com.javeriana.exceptions.NotFoundException;
 import com.javeriana.model.*;
 import com.javeriana.service.ArtistService;
+import com.javeriana.service.CustomerService;
+import com.javeriana.service.SongService;
+import com.javeriana.service.PlaylistService;
 
 public class AdminController {
 
@@ -12,9 +17,15 @@ public class AdminController {
     private List<Playlist> playlists = new ArrayList<>();
 
     ArtistService artistService;
+    CustomerService customerService;
+    SongService songService;
+    PlaylistService playlistService;
 
     public AdminController(ArtistService artistService) {
         this.artistService = artistService;
+        this.customerService = new CustomerService();
+        this.songService = new SongService();
+        this.playlistService = new PlaylistService(playlists, customers);
     }
 
     public void createArtist(String name) {
@@ -29,67 +40,89 @@ public class AdminController {
 
         UUID uuid = UUID.fromString(id);
 
-        // eliminar canciones en artist
+        Artist a = findArtist(id);
+        if (a == null) return;
+
         songs.removeIf(s -> s.getArtists().contains(a));
 
-        // eliminar canciones de playlists
         for (Playlist p : playlists) {
             p.getSongs().removeIf(s -> s.getArtists().contains(a));
         }
 
         artistService.removeArtist(uuid);
-
-
-
-
     }
 
     public void createSong(String name, String genre, int dur, String album, String artistId) {
+
+        if (artistId.isBlank()) {
+            throw new RuntimeException("ID inválido");
+        }
+
         Artist a = findArtist(artistId);
         if (a == null) return;
 
         List<Artist> list = new ArrayList<>();
         list.add(a);
 
-        songs.add(new Song(name, genre, dur, album, list));
+        songService.addSong(name, genre, dur, album, list);
     }
 
     public void removeSong(String id) {
-        Song s = findSong(id);
+
+        if (id.isBlank()) {
+            throw new NotFoundException("La cancion con id" + id + "no existe");
+        }
+
+        UUID uuid = UUID.fromString(id);
+
+        Song s = songService.findSong(uuid);
         if (s == null) return;
 
         for (Playlist p : playlists) {
             p.getSongs().remove(s);
         }
 
-        songs.remove(s);
+        songService.deleteSong(uuid);
     }
 
     public void createCustomer(String username, String password, String name, String lastname, int age) {
-        Customer c = FindCustomer(customerID);
-        if(c == null)
-            return;
-
-        List<Customer> list = new ArrayList<>();
-
-        customers.add(new Customer(username,password,name,lastname,age));
+        customerService.addCustomer(username, password, name, lastname, age);
     }
 
     public void removeCustomer(String id) {
 
-        customers.removeIf(c -> c.getId().toString().equals(id));
+        if (id.isBlank()) {
+            throw new NotFoundException("El Artista con id:" + id + "no existe");
+        }
 
+        UUID uuid = UUID.fromString(id);
+
+        customerService.deleteCustomer(uuid);
     }
 
     public void createPlaylist(String name) {
-        playlists.add(new Playlist(name));
+        playlistService.addPlaylist(name);
     }
 
     public void removePlaylist(String id) {
-        playlists.removeIf(p -> p.getId().toString().equals(id));
+
+        if (id.isBlank()) {
+            throw new NotFoundException("La Playlist de id: " + id + " no existe en la lista de usuario");
+        }
+
+        UUID uuid = UUID.fromString(id);
+
+        playlistService.deletePlaylist(uuid);
     }
+
     public void printArtists() {
-        for (Artist a : artists) System.out.println(a);
+        for (Artist a : artists) {
+            System.out.println(a);
+        }
+    }
+
+    public void printPlaylists() {
+        playlistService.showPlaylists();
     }
 
     public void printSongs() {
@@ -98,10 +131,6 @@ public class AdminController {
 
     public void printCustomers() {
         for (Customer c : customers) System.out.println(c);
-    }
-
-    public void printPlaylists() {
-        for (Playlist p : playlists) System.out.println(p);
     }
 
     private Artist findArtist(String id) {
@@ -121,10 +150,10 @@ public class AdminController {
             if (p.getId().toString().equals(id)) return p;
         return null;
     }
+
     private Customer FindCustomer(String id){
         for(Customer c : customers)
             if (c.getId().toString().equals(id)) return c;
         return null;
     }
-
 }

@@ -2,13 +2,15 @@ package com.javeriana;
 
 import java.util.Scanner;
 import com.javeriana.controller.AdminController;
+import com.javeriana.service.ArtistService;
 
 public class Main {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        AdminController admin = new AdminController();
+        ArtistService artistService = new ArtistService();
+        AdminController admin = new AdminController(artistService);
 
         int option;
 
@@ -59,12 +61,12 @@ public class Main {
                             System.out.print("Duración: ");
                             int dur = sc.nextInt();
                             sc.nextLine();
-
+                            System.out.print("Álbum: ");
+                            String album = sc.nextLine();
                             admin.printArtists();
                             System.out.print("ID artista: ");
                             String artistId = sc.nextLine();
-
-                            admin.createSong(name, genre, dur, artistId);
+                            admin.createSong(name, genre, dur, album, artistId);
                             break;
 
                         case 4:
@@ -131,4 +133,3 @@ public class Main {
         sc.close();
     }
 }
-//Prueba git push y pull.
