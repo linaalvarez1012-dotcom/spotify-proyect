@@ -17,7 +17,6 @@ public class PlaylistService {
         this.customers = customers;
     }
 
-    // 🔹 CREATE
     public void addPlaylist(String name) {
         if (name == null || name.isBlank()) {
             throw new RuntimeException("Nombre inválido");
@@ -29,7 +28,6 @@ public class PlaylistService {
         System.out.println("Playlist creada: " + p.getId());
     }
 
-    // 🔹 FIND
     public Playlist findPlaylist(UUID id) {
         for (Playlist p : playlists) {
             if (p.getId().equals(id)) return p;
@@ -37,12 +35,10 @@ public class PlaylistService {
         return null;
     }
 
-    // 🔹 DELETE
     public void deletePlaylist(UUID id) {
         Playlist p = findPlaylist(id);
         if (p == null) return;
 
-        // eliminar de clientes que la tengan
         for (Customer c : customers) {
             if (c.getPlaylists() != null) {
                 c.getPlaylists().remove(p);
@@ -53,7 +49,6 @@ public class PlaylistService {
         System.out.println("Playlist eliminada");
     }
 
-    // 🔹 SHOW (para menú)
     public void showPlaylists() {
         if (playlists.isEmpty()) {
             System.out.println("No hay playlists");
