@@ -3,7 +3,6 @@ package com.javeriana.service;
 import com.javeriana.model.Playlist;
 import com.javeriana.model.Customer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

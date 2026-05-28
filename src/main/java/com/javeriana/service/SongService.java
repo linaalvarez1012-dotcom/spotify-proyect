@@ -2,6 +2,9 @@ package com.javeriana.service;
 
 import com.javeriana.model.Song;
 
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,4 +48,18 @@ public class SongService {
             System.out.println(s);
         }
     }
+
+    public void cargarSongBin (){
+        try (ObjectOutputStream out =
+                     new ObjectOutputStream(new FileOutputStream("songs.dat"))) {
+
+            out.writeObject(songs);
+
+            System.out.println("Songs guardadas en binario");
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
 }
