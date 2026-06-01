@@ -1,10 +1,10 @@
 package com.javeriana.service;
 
 import com.javeriana.model.Song;
+import com.javeriana.model.Artist;
+import com.javeriana.service.ArtistService;
 
-import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -12,8 +12,9 @@ import java.util.UUID;
 public class SongService {
 
     private List<Song> songs;
+    ArtistService artistService = new ArtistService();
 
-    public SongService() {
+    public SongService(ArtistService artistService) {
         this.songs = new ArrayList<>();
     }
 
@@ -49,9 +50,103 @@ public class SongService {
         }
     }
 
-    public void cargarSongBin (){
+    public void cargarSongsTexto() {
+
+        try (BufferedReader br = new BufferedReader(new FileReader("Song.txt"))) {
+
+            songs.clear();
+
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+
+                String[] partes = linea.split(",");
+
+                if (partes.length < 5) continue;
+
+                String name = partes[0].trim();
+                String genre = partes[1].trim();
+
+                int duracion;
+                try {
+                    duracion = Integer.parseInt(partes[2].trim());
+                } catch (NumberFormatException e) {
+                    continue;
+                }
+
+                String album = partes[3].trim();
+                String nombreArtista = partes[4].trim();
+
+                Artist artista = null;
+
+                for (Artist a : artistService.getArtists()) {
+                    if (a.getName().equalsIgnoreCase(nombreArtista)) {
+                        artista = a;
+                        break;
+                    }
+                }
+
+                if (artista == null) continue;
+
+                List<Artist> lista = new ArrayList<>();
+                lista.add(artista);
+
+                Song s = new Song(name, genre, duracion, album, lista);
+
+                songs.add(s);
+            }
+
+            System.out.println("Canciones cargadas correctamente");
+
+        } catch (IOException e) {
+            System.out.println("Error al cargar Canciones: " + e.getMessage());
+        }
+    }
+
+    public void cargarSongsBinario() {
+
+        try (ObjectInputStream in =
+                     new ObjectInputStream(new FileInputStream("Song.dat"))) {
+
+            songs = (List<Song>) in.readObject();
+
+            System.out.println("Songs cargadas");
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void guardarSongsTexto() {
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter("Song.txt"))) {
+
+            for (Song s : songs) {
+
+                String artista = (s.getArtists().isEmpty())
+                        ? "Desconocido"
+                        : s.getArtists().get(0).getName();
+
+                writer.println(
+                        s.getName() + ", " +
+                                s.getGenre() + ", " +
+                                s.getDurationInSeconds() + ", " +
+                                s.getAlbum() + ", " +
+                                artista
+                );
+            }
+
+            System.out.println("Canciones guardadas correctamente");
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar canciones: " + e.getMessage());
+        }
+    }
+
+    public void guardarSongsBinario() {
+
         try (ObjectOutputStream out =
-                     new ObjectOutputStream(new FileOutputStream("songs.dat"))) {
+                     new ObjectOutputStream(new FileOutputStream("Song.dat"))) {
 
             out.writeObject(songs);
 

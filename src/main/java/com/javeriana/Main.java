@@ -16,7 +16,11 @@ public class Main {
 
         do {
             System.out.println("1. Módulo administrador");
+            System.out.println("2. Guardar información");
+            System.out.println("3. Cargar información");
+            System.out.println("4. Módulo reportes");
             System.out.println("0. Salir");
+
             option = sc.nextInt();
             sc.nextLine();
 
@@ -31,10 +35,6 @@ public class Main {
                     System.out.println("6. Eliminar cliente");
                     System.out.println("7. Crear playlist");
                     System.out.println("8. Eliminar playlist");
-                    System.out.println("9. Ver lista de clientes");
-                    System.out.println("10. Ver lista de canciones");
-                    System.out.println("11. Ver lista de artistas");
-                    System.out.println("12. Ver lista de playlists");
                     System.out.println("0. Volver al menu principal");
 
                     op = sc.nextInt();
@@ -61,11 +61,14 @@ public class Main {
                             System.out.print("Duración: ");
                             int dur = sc.nextInt();
                             sc.nextLine();
+
                             System.out.print("Álbum: ");
                             String album = sc.nextLine();
+
                             admin.printArtists();
                             System.out.print("ID artista: ");
                             String artistId = sc.nextLine();
+
                             admin.createSong(name, genre, dur, album, artistId);
                             break;
 
@@ -107,25 +110,137 @@ public class Main {
                             System.out.print("ID: ");
                             admin.removePlaylist(sc.nextLine());
                             break;
-
-                        case 9:
-                            admin.printCustomers();
-                            break;
-
-                        case 10:
-                            admin.printSongs();
-                            break;
-
-                        case 11:
-                            admin.printArtists();
-                            break;
-
-                        case 12:
-                            admin.printPlaylists();
-                            break;
                     }
 
                 } while (op != 0);
+            }
+
+            else if (option == 2) {
+
+                System.out.println("\n¿QUÉ DESEA GUARDAR?");
+                System.out.println("1. Artistas");
+                System.out.println("2. Canciones");
+                System.out.println("3. Clientes");
+                System.out.println("4. Playlists");
+
+                int A = sc.nextInt();
+                sc.nextLine();
+
+                System.out.println("\n¿CÓMO GUARDAR?");
+                System.out.println("1. Texto");
+                System.out.println("2. Binario");
+                System.out.println("3. Ambos");
+
+                int formato = sc.nextInt();
+                sc.nextLine();
+
+                switch (A) {
+
+                    case 1:
+                        if (formato == 1 || formato == 3)
+                            admin.guardarArtistasTexto();
+                        if (formato == 2 || formato == 3)
+                            admin.guardarArtistasBinario();
+                        break;
+
+                    case 2:
+                        if (formato == 1 || formato == 3)
+                            admin.guardarSongsTexto();
+                        if (formato == 2 || formato == 3)
+                            admin.guardarSongsBinario();
+                        break;
+
+                    case 3:
+                        if (formato == 1 || formato == 3)
+                            admin.guardarCustomersTexto();
+                        if (formato == 2 || formato == 3)
+                            admin.guardarCustomersBinario();
+                        break;
+
+                    case 4: // PLAYLISTS
+                        if (formato == 1 || formato == 3)
+                            admin.guardarPlaylistsTexto();
+                        if (formato == 2 || formato == 3)
+                            admin.guardarPlaylistsBinario();
+                        break;
+                }
+            }
+
+            else if (option == 3) {
+
+                System.out.println("\n¿QUÉ DESEA CARGAR?");
+                System.out.println("1. Artistas");
+                System.out.println("2. Canciones");
+                System.out.println("3. Clientes");
+                System.out.println("4. Playlists");
+
+                int B = sc.nextInt();
+                sc.nextLine();
+
+                System.out.println("\n¿DESDE DÓNDE?");
+                System.out.println("1. Texto");
+                System.out.println("2. Binario");
+
+                int formato = sc.nextInt();
+                sc.nextLine();
+
+                switch (B) {
+
+                    case 1:
+                        if (formato == 1)
+                            admin.cargarArtistasTexto();
+                        else
+                            admin.cargarArtistasBinario();
+                        break;
+
+                    case 2:
+                        if (formato == 1)
+                            admin.cargarSongsTexto();
+                        else
+                            admin.cargarSongsBinario();
+                        break;
+
+                    case 3:
+                        if (formato == 1)
+                            admin.cargarCustomersTexto();
+                        else
+                            admin.cargarCustomersBinario();
+                        break;
+
+                    case 4:
+                        if (formato == 1)
+                            admin.cargarPlaylistsTexto();
+                        else
+                            admin.cargarPlaylistsBinario();
+                        break;
+                }
+            }
+
+            else if (option == 4) {
+
+                System.out.println("\n1. Reporte de clientes");
+                System.out.println("2. Top 3 artistas por cliente");
+                System.out.println("3. Reporte de artistas");
+
+                int C = sc.nextInt();
+                sc.nextLine();
+
+                switch (C) {
+
+                    case 1:
+                        admin.generarReporteClientesTxt();
+                        break;
+
+                    case 2:
+                        admin.printCustomers();
+                        System.out.print("ID cliente: ");
+                        admin.generarToptxt(sc.nextLine());
+                        break;
+
+                    case 3:
+                        admin.generarReporteArtistas();
+                        break;
+                }
             }
 
         } while (option != 0);

@@ -5,10 +5,7 @@ import java.util.*;
 import com.javeriana.exceptions.NotFoundException;
 import com.javeriana.exceptions.AlreadyExistsException;
 import com.javeriana.model.*;
-import com.javeriana.service.ArtistService;
-import com.javeriana.service.CustomerService;
-import com.javeriana.service.SongService;
-import com.javeriana.service.PlaylistService;
+import com.javeriana.service.*;
 
 public class AdminController {
 
@@ -25,7 +22,7 @@ public class AdminController {
     public AdminController(ArtistService artistService) {
         this.artistService = artistService;
         this.customerService = new CustomerService();
-        this.songService = new SongService();
+        this.songService = new SongService(artistService);
         this.playlistService = new PlaylistService(playlists, customers);
     }
 
@@ -246,4 +243,89 @@ public class AdminController {
             if (c.getId().toString().equals(id)) return c;
         return null;
     }
+
+    public void cargarArtistasTexto() {
+        artistService.cargarArtistasTexto();
+    }
+
+    public void cargarSongsTexto() {
+        songService.cargarSongsTexto();
+    }
+
+    public void cargarCustomersTexto() {
+        customerService.cargarCustomersTexto();
+    }
+
+    public void cargarPlaylistsTexto() {
+        playlistService.cargarPlaylistsTexto();
+    }
+
+    public void cargarArtistasBinario() {
+        artistService.cargarArtistasBinario();
+    }
+
+    public void cargarSongsBinario() {
+        songService.cargarSongsBinario();
+    }
+
+    public void cargarCustomersBinario() {
+        customerService.cargarCustomersBinario();
+    }
+
+    public void cargarPlaylistsBinario() {
+        playlistService.cargarPlaylistsBinario();
+    }
+
+    public void guardarArtistasTexto() {
+        artistService.guardarArtistasTexto();
+    }
+
+    public void guardarSongsTexto() {
+        songService.guardarSongsTexto();
+    }
+
+    public void guardarCustomersTexto() {
+        customerService.guardarCustomersTexto();
+    }
+
+    public void guardarPlaylistsTexto() {
+        playlistService.guardarPlaylistsTexto();
+    }
+
+    public void guardarArtistasBinario() {
+        artistService.guardarArtistasBinario();
+    }
+
+    public void guardarSongsBinario() {
+        songService.guardarSongsBinario();
+    }
+
+    public void guardarCustomersBinario() {
+        customerService.guardarCustomersBinario();
+    }
+
+    public void guardarPlaylistsBinario() {
+        playlistService.guardarPlaylistsBinario();
+    }
+
+    public void generarReporteClientesTxt() {
+        customerService.generarReporteClientesTxt();
+    }
+
+    public void generarToptxt(String id) {
+
+        Customer c = FindCustomer(id);
+
+        if (c == null) {
+            System.out.println("Cliente no encontrado");
+            return;
+        }
+
+        customerService.generarToptxt(c);
+    }
+
+    public void generarReporteArtistas() {
+        artistService.GenerarReporteArtistas();
+    }
+
 }
